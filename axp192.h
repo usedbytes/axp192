@@ -39,6 +39,7 @@ extern "C" {
 #endif
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #define	AXP192_ADDRESS	                (0x34)
 
@@ -151,6 +152,7 @@ extern "C" {
 /* Error codes */
 #define AXP192_ERROR_OK                 (0)
 #define AXP192_ERROR_NOTTY              (-1)
+#define AXP192_ERROR_EINVAL             (-22)
 
 typedef struct {
     uint8_t command;
@@ -165,6 +167,25 @@ typedef struct {
 } axp192_t;
 
 typedef int32_t axp192_err_t;
+
+typedef enum {
+    AXP192_RAIL_DCDC1 = 0,
+    AXP192_RAIL_DCDC2,
+    AXP192_RAIL_DCDC3,
+    AXP192_RAIL_LDO1,
+    AXP192_RAIL_LDO2,
+    AXP192_RAIL_LDO3,
+    AXP192_RAIL_EXTEN,
+
+    AXP192_RAIL_COUNT,
+} axp192_rail_t;
+
+axp192_err_t axp192_get_rail_state(axp192_t *axp, axp192_rail_t rail, bool *enabled);
+axp192_err_t axp192_set_rail_state(axp192_t *axp, axp192_rail_t rail, bool enabled);
+axp192_err_t axp192_get_rail_millivolts(axp192_t *axp, axp192_rail_t rail, uint16_t *millivolts);
+axp192_err_t axp192_set_rail_millivolts(axp192_t *axp, axp192_rail_t rail, uint16_t millivolts);
+axp192_err_t axp192_read_reg(axp192_t *axp, uint8_t reg, uint8_t *val);
+axp192_err_t axp192_write_reg(axp192_t *axp, uint8_t reg, uint8_t val);
 
 axp192_err_t axp192_init(axp192_t *axp);
 axp192_err_t axp192_read(axp192_t *axp, uint8_t reg, float *buffer);
