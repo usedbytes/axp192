@@ -36,8 +36,8 @@ SPDX-License-Identifier: MIT
 #include "axp192.h"
 #include "axp192_config.h"
 
-static axp192_err_t read_coloumb_counter(axp192_t *axp, float *buffer);
-static axp192_err_t read_battery_power(axp192_t *axp, float *buffer);
+static axp192_err_t read_coloumb_counter(const axp192_t *axp, float *buffer);
+static axp192_err_t read_battery_power(const axp192_t *axp, float *buffer);
 
 static const axp192_init_command_t init_commands[] = {
     //{AXP192_LDO23_VOLTAGE, {CONFIG_AXP192_LDO23_VOLTAGE}, 1},
@@ -51,7 +51,7 @@ static const axp192_init_command_t init_commands[] = {
     {0, {0}, 0xff},
 };
 
-axp192_err_t axp192_init(axp192_t *axp)
+axp192_err_t axp192_init(const axp192_t *axp)
 {
     uint8_t cmd = 0;
 
@@ -121,7 +121,7 @@ const axp192_rail_cfg_t axp192_rail_configs[] = {
     },
 };
 
-axp192_err_t axp192_get_rail_state(axp192_t *axp, axp192_rail_t rail, bool *enabled)
+axp192_err_t axp192_get_rail_state(const axp192_t *axp, axp192_rail_t rail, bool *enabled)
 {
     axp192_err_t status;
     uint8_t val;
@@ -157,7 +157,7 @@ axp192_err_t axp192_get_rail_state(axp192_t *axp, axp192_rail_t rail, bool *enab
     return AXP192_ERROR_OK;
 }
 
-axp192_err_t axp192_set_rail_state(axp192_t *axp, axp192_rail_t rail, bool enabled)
+axp192_err_t axp192_set_rail_state(const axp192_t *axp, axp192_rail_t rail, bool enabled)
 {
     axp192_err_t status;
     uint8_t val;
@@ -205,7 +205,7 @@ axp192_err_t axp192_set_rail_state(axp192_t *axp, axp192_rail_t rail, bool enabl
     return AXP192_ERROR_OK;
 }
 
-axp192_err_t axp192_get_rail_millivolts(axp192_t *axp, axp192_rail_t rail, uint16_t *millivolts)
+axp192_err_t axp192_get_rail_millivolts(const axp192_t *axp, axp192_rail_t rail, uint16_t *millivolts)
 {
     axp192_err_t status;
     uint8_t val;
@@ -231,7 +231,7 @@ axp192_err_t axp192_get_rail_millivolts(axp192_t *axp, axp192_rail_t rail, uint1
     return AXP192_ERROR_OK;
 }
 
-axp192_err_t axp192_set_rail_millivolts(axp192_t *axp, axp192_rail_t rail, uint16_t millivolts)
+axp192_err_t axp192_set_rail_millivolts(const axp192_t *axp, axp192_rail_t rail, uint16_t millivolts)
 {
 
     axp192_err_t status;
@@ -266,17 +266,17 @@ axp192_err_t axp192_set_rail_millivolts(axp192_t *axp, axp192_rail_t rail, uint1
     return AXP192_ERROR_OK;
 }
 
-axp192_err_t axp192_read_reg(axp192_t *axp, uint8_t reg, uint8_t *val)
+axp192_err_t axp192_read_reg(const axp192_t *axp, uint8_t reg, uint8_t *val)
 {
     return axp->read(AXP192_ADDRESS, reg, val, 1);
 }
 
-axp192_err_t axp192_write_reg(axp192_t *axp, uint8_t reg, uint8_t val)
+axp192_err_t axp192_write_reg(const axp192_t *axp, uint8_t reg, uint8_t val)
 {
     return axp->write(AXP192_ADDRESS, reg, &val, 1);
 }
 
-axp192_err_t axp192_read(axp192_t *axp, uint8_t reg, float *buffer)
+axp192_err_t axp192_read(const axp192_t *axp, uint8_t reg, float *buffer)
 {
     uint8_t tmp[4];
     float sensitivity = 1.0;
@@ -338,7 +338,7 @@ axp192_err_t axp192_read(axp192_t *axp, uint8_t reg, float *buffer)
     return AXP192_ERROR_OK;
 }
 
-axp192_err_t axp192_ioctl(axp192_t *axp, uint16_t command, uint8_t *buffer)
+axp192_err_t axp192_ioctl(const axp192_t *axp, uint16_t command, uint8_t *buffer)
 {
     uint8_t reg = command >> 8;
     uint8_t tmp;
@@ -369,7 +369,7 @@ axp192_err_t axp192_ioctl(axp192_t *axp, uint16_t command, uint8_t *buffer)
     return AXP192_ERROR_NOTTY;
 }
 
-static axp192_err_t read_coloumb_counter(axp192_t *axp, float *buffer)
+static axp192_err_t read_coloumb_counter(const axp192_t *axp, float *buffer)
 {
     uint8_t tmp[4];
     int32_t coin, coout;
@@ -393,7 +393,7 @@ static axp192_err_t read_coloumb_counter(axp192_t *axp, float *buffer)
     return AXP192_ERROR_OK;
 }
 
-static axp192_err_t read_battery_power(axp192_t *axp, float *buffer)
+static axp192_err_t read_battery_power(const axp192_t *axp, float *buffer)
 {
     uint8_t tmp[4];
     float sensitivity;

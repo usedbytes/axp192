@@ -180,16 +180,16 @@ typedef enum {
     AXP192_RAIL_COUNT,
 } axp192_rail_t;
 
-axp192_err_t axp192_get_rail_state(axp192_t *axp, axp192_rail_t rail, bool *enabled);
-axp192_err_t axp192_set_rail_state(axp192_t *axp, axp192_rail_t rail, bool enabled);
-axp192_err_t axp192_get_rail_millivolts(axp192_t *axp, axp192_rail_t rail, uint16_t *millivolts);
-axp192_err_t axp192_set_rail_millivolts(axp192_t *axp, axp192_rail_t rail, uint16_t millivolts);
-axp192_err_t axp192_read_reg(axp192_t *axp, uint8_t reg, uint8_t *val);
-axp192_err_t axp192_write_reg(axp192_t *axp, uint8_t reg, uint8_t val);
+axp192_err_t axp192_get_rail_state(const axp192_t *axp, axp192_rail_t rail, bool *enabled);
+axp192_err_t axp192_set_rail_state(const axp192_t *axp, axp192_rail_t rail, bool enabled);
+axp192_err_t axp192_get_rail_millivolts(const axp192_t *axp, axp192_rail_t rail, uint16_t *millivolts);
+axp192_err_t axp192_set_rail_millivolts(const axp192_t *axp, axp192_rail_t rail, uint16_t millivolts);
+axp192_err_t axp192_read_reg(const axp192_t *axp, uint8_t reg, uint8_t *val);
+axp192_err_t axp192_write_reg(const axp192_t *axp, uint8_t reg, uint8_t val);
 
-axp192_err_t axp192_init(axp192_t *axp);
-axp192_err_t axp192_read(axp192_t *axp, uint8_t reg, float *buffer);
-axp192_err_t axp192_ioctl(axp192_t *axp, uint16_t command, uint8_t *buffer);
+axp192_err_t axp192_init(const axp192_t *axp);
+axp192_err_t axp192_read(const axp192_t *axp, uint8_t reg, float *buffer);
+axp192_err_t axp192_ioctl(const axp192_t *axp, uint16_t command, uint8_t *buffer);
 
 #ifdef __cplusplus
 }
